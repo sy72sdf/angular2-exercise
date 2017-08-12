@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script type="text/javascript" src="../angular.min.js"></script>
+<script type="text/javascript" src="../angular-route.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style type="text/css">
+  	.container{width:1000px; margin:0 auto;}
+    table{border-spacing:0;border-collapse:collapse}
+    table tr th {text-align: left; padding-bottom: 20px;}
+    table tr td {border-top: 1px solid #ddd; padding: 10px 0;}
+    .pagination-nav {
+      text-align: right;
+    }
+    .pagination-nav .page-nav {
+      border: 1px solid #eeeeee;
+      border-radius: 10px;
+      margin-left: 6px;
+    }
+    .pagination-nav .page-nav .pre-page {
+      width: 0; height: 0;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 15px;
+      margin-right: 13px;
+      border-right: 12px solid #686868;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+    }
+    .pagination-nav .page-nav .nav-separator {
+      border-right: 1px solid #eeeeee;
+    }
+    .pagination-nav .page-nav .next-page {
+      width: 0; height: 0;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 20px;
+      margin-right: 12px;
+      border-left: 12px solid #686868;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+    }
+    .pagination-nav .page-nav .disabled {
+      cursor: inherit;
+      border-left-color: #e6e6e6;
+      border-right-color: #e6e6e6;
+    }
+</style>
+</head>
+<body ng-app="myApp">
+<div class="container">
+  <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#">首页</a>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                  <li><a href="#/witch">巫师3</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  <div class="page-header">
+  	<h1>欢迎！</h1>
+  </div>
+	<div ng-view></div>
+</div>
+<script>
+var app = angular.module("myApp",['ngRoute']);
+app.config(["$routeProvider",function($provider){
+	$provider
+	.when("/witch",{
+		templateUrl:"witch.html",
+		controller:"witch"
+	})
+	
+}]);
+app.controller("witch",function($scope,$http){
+	$http.get("witch.php?listid=巫师3&id="+new Date().getTime()).success(function(mydate){
+		$scope.homeList = mydate.homeList;
+//		alert(123);
+		$scope.pageSize = 2;
+		$scope.curPage = 0;
+		$scope.pageCont = Math.ceil($scope.homeList.length/$scope.pageSize)-1;
+			
+	});	
+});	
+app.filter("pageStart",function(){
+	return function(e,start){
+		if(typeof(e)!="undefined") return e.slice(start);	
+	}
+});
+app.filter("asHtml",function($sce){
+	return function(text){
+		return $sce.trustAsHtml(text);
+	}	
+});
+</script>
+</body>
+</html>

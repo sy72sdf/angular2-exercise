@@ -1,0 +1,33 @@
+<table width="100%">
+      <tr>
+        <th>姓名</th>
+        <th width="50%">就业企业</th>
+      </tr>
+      <tr ng-repeat="v in homeList | pageStart:pageSize*curPage | limitTo:pageSize">
+        <td>{{v.title}}</td>
+        <td>{{v.date}}</td>
+      </tr>
+      <tr height="66">
+        <td align="right">
+          <button ng-disabled="curPage==0" ng-click="curPage=0">首页</button>
+          <button ng-click="curPage=curPage-1" ng-disabled="curPage==0">上一页</button>
+          当前第<span ng-bind="curPage+1"></span>页
+          <button ng-click="curPage=curPage+1" ng-disabled="curPage==pageCont">下一页</button>
+          <button ng-disabled="curPage==pageCont" ng-click="curPage=pageCont">尾页</button>
+        </td>
+        <td>
+          <div class="pagination-nav">
+            <span ng-bind="curPage+1"></span>
+            <span class="page-separator">/</span>
+            <span ng-bind="pageCont+1"></span>
+            <span class="page-nav">
+              <span class="pre-page" ng-click="curPage=curPage-1" ng-show="curPage > 0"></span>
+              <span class="pre-page disabled" ng-show="curPage==0"></span>
+              <span class="nav-separator"></span>
+              <span class="next-page" ng-click="curPage=curPage+1" ng-show="curPage<pageCont"></span>
+              <span class="next-page disabled" ng-show="curPage==pageCont"></span>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </table>
